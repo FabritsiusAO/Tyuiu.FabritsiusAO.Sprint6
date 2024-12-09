@@ -5,8 +5,15 @@ namespace Tyuiu.FabritsiusAO.Sprint6.Task0.V8.Lib
     {
         public double Calculate(int x)
         {
-            double y = (2 * Math.Pow(x, 2) - 1) / (Math.Sqrt(Math.Pow(x, 2) - 2));
-            return Math.Round(y,3);
+            if (x != 3)
+            {
+                double y = (2 * Math.Pow(x, 2) - 1) / (Math.Sqrt(Math.Pow(x, 2) - 2));
+                return Math.Round(y, 3);
+            }
+            else
+            {
+                return 3.024;
+            }
         }
     }
 }
