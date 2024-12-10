@@ -20,7 +20,7 @@ namespace Tyuiu.FabritsiusAO.Sprint6.Task0.V8
 
         private void button1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Таск 0 выполнил студент группы ИСТНб-24-1 Фабрициус Андрей Олегович", "Сообщение",MessageBoxButtons.OK);
+            MessageBox.Show("Таск 0 выполнил студент группы ИСТНб-24-1 Фабрициус Андрей Олегович", "Сообщение", MessageBoxButtons.OK);
         }
 
         private void textBox3_TextChanged(object sender, EventArgs e)
@@ -70,6 +70,11 @@ namespace Tyuiu.FabritsiusAO.Sprint6.Task0.V8
         }
 
         private void textBoxOutput_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void FormMain_Load(object sender, EventArgs e)
         {
 
         }

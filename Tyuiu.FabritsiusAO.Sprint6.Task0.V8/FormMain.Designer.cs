@@ -175,6 +175,7 @@
             Controls.Add(groupBox1);
             Name = "FormMain";
             Text = "Form1";
+            Load += FormMain_Load;
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
