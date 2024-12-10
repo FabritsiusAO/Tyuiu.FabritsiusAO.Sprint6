@@ -59,17 +59,16 @@
             // 
             // BRun
             // 
-            BRun.Enabled = false;
             BRun.Location = new Point(102, 12);
             BRun.Name = "BRun";
             BRun.Size = new Size(84, 67);
             BRun.TabIndex = 1;
             BRun.Text = "Run";
             BRun.UseVisualStyleBackColor = true;
+            BRun.Click += BRun_Click;
             // 
             // BSave
             // 
-            BSave.Enabled = false;
             BSave.Location = new Point(192, 12);
             BSave.Name = "BSave";
             BSave.Size = new Size(84, 67);

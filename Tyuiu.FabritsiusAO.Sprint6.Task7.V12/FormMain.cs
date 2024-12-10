@@ -1,7 +1,7 @@
 using System.Windows.Forms;
 using Tyuiu.FabritsiusAO.Sprint6.Task7.V12.Lib;
 namespace Tyuiu.FabritsiusAO.Sprint6.Task7.V12
-{
+{ //1
     public partial class FormMain : Form
     {
         public FormMain()
@@ -53,27 +53,70 @@ namespace Tyuiu.FabritsiusAO.Sprint6.Task7.V12
 
         private void BOpen_Click(object sender, EventArgs e)
         {
-            int[,] ArrayValues = new int[rows, cols];
-            DGV_IN.ColumnCount = cols;
-            DGV_IN.RowCount = rows;
-            DGV_OUT.ColumnCount = cols;
-            DGV_OUT.RowCount = rows;
-
-            for (int i = 0; i < cols; i++)
+            openFileDialog1.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
+            openFileDialog1.Title = "Выберите файл";
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                DGV_IN.Columns[i].Width = 25;
-                DGV_OUT.Columns[i].Width = 25;
-            }
-
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < cols; j++)
+                string path = openFileDialog1.FileName;
+                string[] lines = File.ReadAllLines(path);
+                if (lines.Length == 0)
                 {
-                    DGV_IN.Rows[i].Cells[j].Value = ArrayValues[i,j];
+                    MessageBox.Show("Ошибка");
+                    return;
+                }
+                DGV_IN.Rows.Clear();
+                DGV_IN.Columns.Clear();
+                string[] firstrow = lines[0].Split(';');
+                for (int i = 0; i < firstrow.Length; i++)
+                {
+                    DGV_IN.Columns.Add($"Column{i + 1}", $"Column{i + 1}");
+                }
+                foreach (string line in lines)
+                {
+                    string[] row = line.Split(';');
+                    DGV_IN.Rows.Add(row);
                 }
             }
-            ArrayValues = ds.GetMatrix(LoadFromFileData(OpenFilePath));
-            BRun.Enabled = true;
+        }
+
+        private void BRun_Click(object sender, EventArgs e)
+        {
+            int rowcount = 10;
+            int columncount = 10;
+            int[,] matrix = new int[rowcount, columncount];
+            for (int i = 0; i < rowcount; i++)
+            {
+                for (int j = 0; j < columncount; j++)
+                {
+                    if (DGV_IN.Rows[i].IsNewRow) continue;
+                    string cellValue = DGV_IN[j, i].Value?.ToString();
+
+                    if (!string.IsNullOrWhiteSpace(cellValue) && int.TryParse(cellValue, out int result))
+                    {
+                        matrix[i, j] = result;
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Ошибка преобразования в строке {i + 1}, колонке {j + 1}: '{cellValue}' не является числом.");
+                        return;
+                    }
+                }
+            }
+            DataService ds = new DataService();
+            matrix = ds.GetMatrix(matrix);
+            for (int i = 0; i < columncount; i++)
+            {
+                DGV_OUT.Columns.Add($"Column{i + 1}", $"Column{i + 1}");
+            }
+            for (int i = 0; i < rowcount; i++)
+            {
+                object[] newmatrix = new object[columncount];
+                for (int j = 0; j < columncount; j++)
+                {
+                    newmatrix[j] = matrix[i, j];
+                }
+                DGV_OUT.Rows.Add(newmatrix);
+            }
         }
     }
 }
