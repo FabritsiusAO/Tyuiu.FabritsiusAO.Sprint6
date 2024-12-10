@@ -5,30 +5,23 @@ namespace Tyuiu.FabritsiusAO.Sprint6.Task7.V12.Lib
     {
         public int[,] GetMatrix(string path)
         {
-            string fileData = File.ReadAllText(path);
-            string[] lines = fileData.Split('\n', StringSplitOptions.RemoveEmptyEntries);
-            int rows = lines.Length;
-            int cols = lines[0].Split(';').Length;
-            int[,] mtrx = new int[rows, cols];
-
-            for (int r = 0; r < rows; r++)
+            throw new NotImplementedException();
+        }
+        public int[,] GetMatrix(int[,] matrix)
+        {
+            int rows = matrix.GetLength(0);
+            int cols = matrix.GetLength(1);
+            for (int i = 0; i < rows; i++)
             {
-                string[] line_r = lines[r].Split(';');
-                for (int c = 0; c < cols; c++)
+                for (int j = 9; j < cols; j++)
                 {
-                    mtrx[r, c] = Convert.ToInt32(line_r[c]);
+                    if (matrix[i, j] != 10)
+                    {
+                        matrix[i, j] = 0;
+                    }
                 }
             }
-            for (int i = 0; i < mtrx.GetLength(0); i++)
-            {
-                if (mtrx[i, 8] != 10)
-                {
-                    mtrx[i, 8] = 0;
-                }
-
-
-            }
-            return mtrx;
+            return matrix;
         }
     }
 }
