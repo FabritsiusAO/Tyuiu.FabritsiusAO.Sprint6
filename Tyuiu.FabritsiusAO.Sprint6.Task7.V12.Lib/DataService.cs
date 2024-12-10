@@ -3,10 +3,6 @@ namespace Tyuiu.FabritsiusAO.Sprint6.Task7.V12.Lib
 {
     public class DataService : ISprint6Task7V12
     {
-        public int[,] GetMatrix(string path)
-        {
-            throw new NotImplementedException();
-        }
         public int[,] GetMatrix(int[,] matrix)
         {
             for (int i = 0; i < matrix.GetLength(0); i++)
@@ -17,6 +13,11 @@ namespace Tyuiu.FabritsiusAO.Sprint6.Task7.V12.Lib
                 }
             }
             return matrix;
+        }
+
+        int[,] ISprint6Task7V12.GetMatrix(string path)
+        {
+            throw new NotImplementedException();
         }
     }
 }
