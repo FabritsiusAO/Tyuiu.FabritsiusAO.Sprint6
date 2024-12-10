@@ -13,7 +13,7 @@ namespace Tyuiu.FabritsiusAO.Sprint6.Task6.V13.Lib
                 string[] lastStr = strPath[i].Split(' ');
                 if (lastStr.Length >= 2)
                 {
-                    res += lastStr[lastStr.Length - 2];
+                    res += lastStr[lastStr.Length - 2] + " ";
                 }
             }
             return res;
