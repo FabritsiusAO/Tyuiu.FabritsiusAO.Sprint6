@@ -1,3 +1,4 @@
+using System.Windows.Forms;
 using Tyuiu.FabritsiusAO.Sprint6.Task7.V12.Lib;
 namespace Tyuiu.FabritsiusAO.Sprint6.Task7.V12
 {
@@ -6,8 +7,6 @@ namespace Tyuiu.FabritsiusAO.Sprint6.Task7.V12
         public FormMain()
         {
             InitializeComponent();
-
-            
         }
         DataService ds = new();
         static int rows;

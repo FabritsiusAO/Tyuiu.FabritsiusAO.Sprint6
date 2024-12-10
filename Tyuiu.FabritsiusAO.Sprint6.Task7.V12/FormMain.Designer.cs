@@ -39,6 +39,7 @@
             DGV_IN = new DataGridView();
             groupBox3 = new GroupBox();
             DGV_OUT = new DataGridView();
+            openFileDialog1 = new OpenFileDialog();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)DGV_IN).BeginInit();
@@ -144,6 +145,10 @@
             DGV_OUT.Size = new Size(363, 253);
             DGV_OUT.TabIndex = 0;
             // 
+            // openFileDialog1
+            // 
+            openFileDialog1.FileName = "openFileDialog1";
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -180,5 +185,6 @@
         private GroupBox groupBox3;
         private DataGridView DGV_OUT;
         private TextBox textBox1;
+        private OpenFileDialog openFileDialog1;
     }
 }

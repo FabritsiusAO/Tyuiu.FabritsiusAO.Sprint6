@@ -9,16 +9,11 @@ namespace Tyuiu.FabritsiusAO.Sprint6.Task7.V12.Lib
         }
         public int[,] GetMatrix(int[,] matrix)
         {
-            int rows = matrix.GetLength(0);
-            int cols = matrix.GetLength(1);
-            for (int i = 0; i < rows; i++)
+            for (int i = 0; i < matrix.GetLength(0); i++)
             {
-                for (int j = 9; j < cols; j++)
+                if (matrix[i, 8] != 10)
                 {
-                    if (matrix[i, j] != 10)
-                    {
-                        matrix[i, j] = 0;
-                    }
+                    matrix[i, 8] = 0;
                 }
             }
             return matrix;
