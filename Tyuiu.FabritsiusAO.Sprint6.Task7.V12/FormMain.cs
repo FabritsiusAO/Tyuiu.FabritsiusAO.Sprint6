@@ -118,5 +118,52 @@ namespace Tyuiu.FabritsiusAO.Sprint6.Task7.V12
                 DGV_OUT.Rows.Add(newmatrix);
             }
         }
+
+        private void BSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                saveFileDialog.FileName = "OutPutDataFileTask7V9.csv";
+                saveFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
+                saveFileDialog.ShowDialog();
+
+                string pathSave = saveFileDialog.FileName;
+
+                FileInfo fileInfo = new FileInfo(pathSave);
+                if (fileInfo.Exists)
+                {
+                    File.Delete(pathSave);
+                }
+
+                int row = DGV_OUT.RowCount;
+                int col = DGV_IN.ColumnCount;
+                string str = "";
+
+                for (int i = 0; i < row; i++)
+                {
+                    for (int j = 0; j < col; j++)
+                    {
+                        if (j < col)
+                        {
+                            str += DGV_OUT.Rows[i].Cells[j].Value + ";";
+                        }
+                        else
+                        {
+                            str += DGV_OUT.Rows[i].Cells[j].Value;
+                        }
+                    }
+                    File.AppendAllText(pathSave, str + Environment.NewLine);
+                    str = "";
+
+                }
+                DGV_OUT.Text = DGV_OUT.Text + " " + pathSave;
+            }
+            catch
+            {
+                MessageBox.Show("Îøèáêà", "Îøèáêà", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
     }
+    
 }

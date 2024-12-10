@@ -40,6 +40,7 @@
             groupBox3 = new GroupBox();
             DGV_OUT = new DataGridView();
             openFileDialog1 = new OpenFileDialog();
+            saveFileDialog = new SaveFileDialog();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)DGV_IN).BeginInit();
@@ -75,6 +76,7 @@
             BSave.TabIndex = 2;
             BSave.Text = "Save";
             BSave.UseVisualStyleBackColor = true;
+            BSave.Click += BSave_Click;
             // 
             // BInfo
             // 
@@ -185,5 +187,6 @@
         private DataGridView DGV_OUT;
         private TextBox textBox1;
         private OpenFileDialog openFileDialog1;
+        private SaveFileDialog saveFileDialog;
     }
 }
