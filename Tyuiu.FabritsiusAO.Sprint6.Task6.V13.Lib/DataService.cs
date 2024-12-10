@@ -16,7 +16,7 @@ namespace Tyuiu.FabritsiusAO.Sprint6.Task6.V13.Lib
                     res += lastStr[lastStr.Length - 2] + " ";
                 }
             }
-            return res;
+            return res.Trim();
         }
     }
 }
