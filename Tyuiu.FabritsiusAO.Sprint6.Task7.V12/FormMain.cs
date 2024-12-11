@@ -1,39 +1,39 @@
+using System.IO;
 using System.Windows.Forms;
 using Tyuiu.FabritsiusAO.Sprint6.Task7.V12.Lib;
 namespace Tyuiu.FabritsiusAO.Sprint6.Task7.V12
 { //1
     public partial class FormMain : Form
     {
-        public FormMain()
-        {
-            InitializeComponent();
-        }
         DataService ds = new();
         static int rows;
         static int cols;
-        static string OpenFilePath;
-
-        public static int[,] LoadFromFileData(string filePath)
+        static string path;
+        public static int[,] mtr(string path)
         {
-            string Data = File.ReadAllText(filePath);
-
-            Data = Data.Replace('\n', '\r');
-            string[] lines = Data.Split(new char[] { '\r' }, StringSplitOptions.RemoveEmptyEntries);
-
+            string data = File.ReadAllText(path);
+            data = data.Replace('\n', '\r');
+            string[] lines = data.Split(new char[] { '\r' }, StringSplitOptions.RemoveEmptyEntries);
             rows = lines.Length;
             cols = lines[0].Split(';').Length;
 
-            int[,] ArrayValues = new int[rows, cols];
 
-            for (int i = 0; i < rows; i++)
+            int[,] arr = new int[rows, cols];
+            for (int r = 0; r < rows; r++)
             {
-                string[] line_r = lines[i].Split(';');
-                for (int j = 0; j < cols; j++)
+                string[] linr = lines[r].Split(';');
+                for (int c = 0; c < cols; c++)
                 {
-                    ArrayValues[i, j] = Convert.ToInt32(line_r[j]);
+                    arr[r, c] = Convert.ToInt32(linr[c]);
                 }
             }
-            return ArrayValues;
+            return arr;
+        }
+        public FormMain()
+        {
+            InitializeComponent();
+            openFileDialog1.Filter = "Значения, разделенные запятыми(*.csv)|*.csv|Все файлы(*.*)|*.*";
+            saveFileDialog.Filter = "Значения, разделенные запятыми(*.csv)|*.csv|Все файлы(*.*)|*.*";
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -53,114 +53,79 @@ namespace Tyuiu.FabritsiusAO.Sprint6.Task7.V12
 
         private void BOpen_Click(object sender, EventArgs e)
         {
-            openFileDialog1.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
-            openFileDialog1.Title = "Выберите файл";
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                string path = openFileDialog1.FileName;
-                string[] lines = File.ReadAllLines(path);
-                if (lines.Length == 0)
+                openFileDialog1.ShowDialog();
+                path = openFileDialog1.FileName;
+                openFileDialog1.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
+                openFileDialog1.Title = "Выберите файл";
+                int[,] arr = new int[rows, cols];
+                arr = mtr(path);
+                DGV_IN.ColumnCount = cols;
+                DGV_OUT.ColumnCount = cols;
+                DGV_IN.RowCount = rows;
+                DGV_OUT.RowCount = rows;
+                for (int i = 0; i < cols; i++)
                 {
-                    MessageBox.Show("Ошибка");
-                    return;
+                    DGV_IN.Columns[i].Width = 25;
+                    DGV_OUT.Columns[i].Width = 25;
                 }
-                DGV_IN.Rows.Clear();
-                DGV_IN.Columns.Clear();
-                string[] firstrow = lines[0].Split(';');
-                for (int i = 0; i < firstrow.Length; i++)
+                for (int r = 0; r < rows; r++)
                 {
-                    DGV_IN.Columns.Add($"Column{i + 1}", $"Column{i + 1}");
-                }
-                foreach (string line in lines)
-                {
-                    string[] row = line.Split(';');
-                    DGV_IN.Rows.Add(row);
+                    for (int c = 0; c < cols; c++)
+                    {
+                        DGV_IN.Rows[r].Cells[c].Value = arr[r, c];
+                    }
                 }
             }
         }
 
         private void BRun_Click(object sender, EventArgs e)
         {
-            int rowcount = 10;
-            int columncount = 10;
-            int[,] matrix = new int[rowcount, columncount];
-            for (int i = 0; i < rowcount; i++)
             {
-                for (int j = 0; j < columncount; j++)
+                int[,] arr = new int[rows, cols];
+                arr = ds.GetMatrix(path);
+                for (int r = 0; r < rows; r++)
                 {
-                    if (DGV_IN.Rows[i].IsNewRow) continue;
-                    string cellValue = DGV_IN[j, i].Value?.ToString();
-
-                    if (!string.IsNullOrWhiteSpace(cellValue) && int.TryParse(cellValue, out int result))
+                    for (int c = 0; c < cols; c++)
                     {
-                        matrix[i, j] = result;
-                    }
-                    else
-                    {
-                        MessageBox.Show($"Ошибка преобразования в строке {i + 1}, колонке {j + 1}: '{cellValue}' не является числом.");
-                        return;
+                        DGV_OUT.Rows[r].Cells[c].Value = arr[r, c];
                     }
                 }
-            }
-            DataService ds = new DataService();
-            matrix = ds.GetMatrix(matrix);
-            for (int i = 0; i < columncount; i++)
-            {
-                DGV_OUT.Columns.Add($"Column{i + 1}", $"Column{i + 1}");
-            }
-            for (int i = 0; i < rowcount; i++)
-            {
-                object[] newmatrix = new object[columncount];
-                for (int j = 0; j < columncount; j++)
-                {
-                    newmatrix[j] = matrix[i, j];
-                }
-                DGV_OUT.Rows.Add(newmatrix);
             }
         }
 
         private void BSave_Click(object sender, EventArgs e)
         {
-            try
             {
-                saveFileDialog.FileName = "OutPutDataFileTask7V9.csv";
+                saveFileDialog.FileName = "OutPutTask7.csv";
                 saveFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
                 saveFileDialog.ShowDialog();
 
-                string pathSave = saveFileDialog.FileName;
-
-                FileInfo fileInfo = new FileInfo(pathSave);
-                if (fileInfo.Exists)
+                string path1 = saveFileDialog.FileName;
+                FileInfo fi = new FileInfo(path1);
+                bool fe = fi.Exists;
+                if (fe)
                 {
-                    File.Delete(pathSave);
+                    File.Delete(path1);
                 }
-
-                int row = DGV_OUT.RowCount;
-                int col = DGV_IN.ColumnCount;
                 string str = "";
-
-                for (int i = 0; i < row; i++)
+                for (int i = 0; i < rows; i++)
                 {
-                    for (int j = 0; j < col; j++)
+                    for (int j = 0; j < cols; j++)
                     {
-                        if (j < col)
+                        if (j != cols - 1)
                         {
-                            str += DGV_OUT.Rows[i].Cells[j].Value + ";";
+                            str = str + DGV_OUT.Rows[i].Cells[j].Value + ";";
                         }
                         else
                         {
-                            str += DGV_OUT.Rows[i].Cells[j].Value;
+                            str = str + DGV_OUT.Rows[i].Cells[j].Value;
                         }
                     }
-                    File.AppendAllText(pathSave, str + Environment.NewLine);
+                    File.AppendAllText(path1, str + Environment.NewLine);
                     str = "";
-
                 }
-                DGV_OUT.Text = DGV_OUT.Text + " " + pathSave;
-            }
-            catch
-            {
-                MessageBox.Show("Ошибка", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
             }
 
         }
